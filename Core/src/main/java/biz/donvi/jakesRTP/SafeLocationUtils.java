@@ -34,6 +34,7 @@ public class SafeLocationUtils {
             case LARGE_FERN:
             case VINE:
             case GRASS:
+            case SHORT_GRASS:
             case TALL_GRASS:
             case GLOW_LICHEN:
             case MOSS_CARPET:
