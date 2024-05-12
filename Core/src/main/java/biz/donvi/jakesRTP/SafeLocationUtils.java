@@ -35,9 +35,27 @@ public class SafeLocationUtils {
             case VINE:
             case SHORT_GRASS:
             case TALL_GRASS:
+            case DEAD_BUSH:
+            case BROWN_MUSHROOM:
+            case RED_MUSHROOM:
             case GLOW_LICHEN:
             case MOSS_CARPET:
             case GLOW_BERRIES:
+            case DANDELION:
+            case POPPY:
+            case BLUE_ORCHID:
+            case ALLIUM:
+            case AZURE_BLUET:
+            case RED_TULIP:
+            case ORANGE_TULIP:
+            case WHITE_TULIP:
+            case PINK_TULIP:
+            case OXEYE_DAISY:
+            case CORNFLOWER:
+            case LILY_OF_THE_VALLEY:
+            case SUNFLOWER:
+            case LILAC:
+            case ROSE_BUSH:
             case PINK_PETALS:
                 return true;
             case WATER:
