@@ -56,6 +56,7 @@ public class SafeLocationUtils {
             case SUNFLOWER:
             case LILAC:
             case ROSE_BUSH:
+            case PEONY:
             case PINK_PETALS:
                 return true;
             case WATER:
