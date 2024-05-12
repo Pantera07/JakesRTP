@@ -36,6 +36,7 @@ public class SafeLocationUtils {
             case SHORT_GRASS:
             case TALL_GRASS:
             case DEAD_BUSH:
+            case SUGAR_CANE:
             case BROWN_MUSHROOM:
             case RED_MUSHROOM:
             case GLOW_LICHEN:
