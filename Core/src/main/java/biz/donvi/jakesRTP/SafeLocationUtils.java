@@ -76,8 +76,11 @@ public class SafeLocationUtils {
             case POINTED_DRIPSTONE:
                 return false;
             case GRASS_BLOCK:
-            case STONE:
+            case PODZOL:
             case DIRT:
+            case COARSE_DIRTT:
+            case MUD:
+            case STONE:
             default:
                 return true;
         }
@@ -122,10 +125,13 @@ public class SafeLocationUtils {
             case TAIGA:
             case OLD_GROWTH_PINE_TAIGA:
             case OLD_GROWTH_SPRUCE_TAIGA:
+            case SNOWY_TAIGA:
             case BIRCH_FOREST:
             case OLD_GROWTH_BIRCH_FOREST:
             case DARK_FOREST:
+            case JUNGLE:
             case SPARSE_JUNGLE:
+            case BAMBOO_JUNGLE:
             case SWAMP:
             case MANGROVE_SWAMP:
             case PLAINS:
@@ -136,6 +142,8 @@ public class SafeLocationUtils {
             case SOUL_SAND_VALLEY:
             case CRIMSON_FOREST:
             case WARPED_FOREST:
+            case THE_END:
+            case END_MIDLANDS:
                 return true;
             default:
                 return false;
