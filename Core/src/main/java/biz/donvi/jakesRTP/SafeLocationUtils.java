@@ -78,7 +78,7 @@ public class SafeLocationUtils {
             case GRASS_BLOCK:
             case PODZOL:
             case DIRT:
-            case COARSE_DIRTT:
+            case COARSE_DIRT:
             case MUD:
             case STONE:
             default:
