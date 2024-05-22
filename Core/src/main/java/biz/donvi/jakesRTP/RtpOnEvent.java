@@ -4,9 +4,9 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.RegisteredListener;
+import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.util.WeakHashMap;
 import java.util.logging.Level;
@@ -17,7 +17,7 @@ public class RtpOnEvent implements Listener {
 
     private final RandomTeleporter randomTeleporter;
 
-    private final WeakHashMap<PlayerJoinEvent, Location>    oldJoinEvents    = new WeakHashMap<>();
+    private final WeakHashMap<PlayerSpawnLocationEvent, Location>    oldSpawnLocationEvents    = new WeakHashMap<>();
     private final WeakHashMap<PlayerRespawnEvent, Location> oldRespawnEvents = new WeakHashMap<>();
 
     public RtpOnEvent(RandomTeleporter randomTeleporter) {this.randomTeleporter = randomTeleporter;}
@@ -27,37 +27,37 @@ public class RtpOnEvent implements Listener {
      * When {@code firstJoinRtp} is enabled, this will RTP a player when they join the server
      * for the first time.
      *
-     * @param event The PlayerJoinEvent
+     * @param event The PlayerSpawnLocationEvent
      */
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void playerJoin(PlayerJoinEvent event) {
+    public void playerSpawnLocation(PlayerSpawnLocationEvent event) {
         // If any of these are true, no nothing.
         if (!randomTeleporter.firstJoinRtp ||  // Rtp-on-first-join is DISABLED
-            event.getPlayer().hasPlayedBefore() || // The player HAS played
             event.getPlayer().hasPermission("jakesrtp.nofirstjoinrtp") // The player is exempt
         ) return;
         try {
             assert randomTeleporter.firstJoinSettings != null;
             assert randomTeleporter.firstJoinSettings.landingWorld != null;
-            RandomTeleportAction rtpa = new RandomTeleportAction(
+            Location landingLoc = new RandomTeleportAction(
                 randomTeleporter,
                 randomTeleporter.firstJoinSettings,
                 randomTeleporter.firstJoinSettings.landingWorld.getSpawnLocation(),
                 true, true,
                 randomTeleporter.logRtpOnPlayerJoin, "Rtp-on-join triggered!"
-            ).teleportSync(event.getPlayer());
-            oldJoinEvents.put(event, rtpa.getLandingLoc().clone());
+            ).requestLocation();
+            event.setSpawnLocation(landingLoc);
+            oldSpawnLocationEvents.put(event, landingLoc.clone());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void playerJoinMonitor(PlayerJoinEvent event) {
-        Location properLoc = oldJoinEvents.get(event);
-        Location actualLoc = event.getPlayer().getLocation();
+    public void playerSpawnLocationMonitor(PlayerSpawnLocationEvent event) {
+        Location properLoc = oldSpawnLocationEvents.get(event);
+        Location actualLoc = event.getSpawnLocation();
         if (properLoc == null || locIntEqual(properLoc, actualLoc)) return;
-        handlerLogging(event.getHandlers().getRegisteredListeners(), "rtp-on-join", "PlayerJoinEvent");
+        handlerLogging(event.getHandlers().getRegisteredListeners(), "rtp-on-join", "PlayerSpawnLocationEvent");
     }
 
 
