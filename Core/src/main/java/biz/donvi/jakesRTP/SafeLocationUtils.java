@@ -35,9 +35,29 @@ public class SafeLocationUtils {
             case VINE:
             case SHORT_GRASS:
             case TALL_GRASS:
+            case DEAD_BUSH:
+            case SUGAR_CANE:
+            case BROWN_MUSHROOM:
+            case RED_MUSHROOM:
             case GLOW_LICHEN:
             case MOSS_CARPET:
             case GLOW_BERRIES:
+            case DANDELION:
+            case POPPY:
+            case BLUE_ORCHID:
+            case ALLIUM:
+            case AZURE_BLUET:
+            case RED_TULIP:
+            case ORANGE_TULIP:
+            case WHITE_TULIP:
+            case PINK_TULIP:
+            case OXEYE_DAISY:
+            case CORNFLOWER:
+            case LILY_OF_THE_VALLEY:
+            case SUNFLOWER:
+            case LILAC:
+            case ROSE_BUSH:
+            case PEONY:
             case PINK_PETALS:
                 return true;
             case WATER:
@@ -76,8 +96,11 @@ public class SafeLocationUtils {
             case POINTED_DRIPSTONE:
                 return false;
             case GRASS_BLOCK:
-            case STONE:
+            case PODZOL:
             case DIRT:
+            case COARSE_DIRT:
+            case MUD:
+            case STONE:
             default:
                 return true;
         }
@@ -122,10 +145,13 @@ public class SafeLocationUtils {
             case TAIGA:
             case OLD_GROWTH_PINE_TAIGA:
             case OLD_GROWTH_SPRUCE_TAIGA:
+            case SNOWY_TAIGA:
             case BIRCH_FOREST:
             case OLD_GROWTH_BIRCH_FOREST:
             case DARK_FOREST:
+            case JUNGLE:
             case SPARSE_JUNGLE:
+            case BAMBOO_JUNGLE:
             case SWAMP:
             case MANGROVE_SWAMP:
             case PLAINS:
@@ -136,6 +162,8 @@ public class SafeLocationUtils {
             case SOUL_SAND_VALLEY:
             case CRIMSON_FOREST:
             case WARPED_FOREST:
+            case THE_END:
+            case END_MIDLANDS:
                 return true;
             default:
                 return false;
