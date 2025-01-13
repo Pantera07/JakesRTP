@@ -7,10 +7,15 @@ import io.papermc.paper.registry.keys.tags.BiomeTagKeys;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SafeLocationUtils {
 
     public static final SafeLocationUtils util;
 
+    private static Registry<Biome> biomeRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME);
+    private static Set<TypedKey<Biome>> allowedBiomes = new HashSet<>();
 
     static {
         util = new SafeLocationUtils();
@@ -67,17 +72,19 @@ public class SafeLocationUtils {
      * @param biome The biome to check
      * @return Whether it is an allowed biome
      */
-    boolean isAllowedBiome(Biome biome) {
-        Registry<Biome> biomeRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME);
-        TypedKey<Biome> biomeTypedKey = TypedKey.create(RegistryKey.BIOME, biomeRegistry.getKeyOrThrow(biome));
+    public static void loadAllowBiome() {
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_FOREST).values());
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_SAVANNA).values());
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_TAIGA).values());
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_HILL).values());
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_JUNGLE).values());
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_NETHER).values());
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_END).values());
+    }
 
-        return biomeRegistry.getTag(BiomeTagKeys.IS_FOREST).contains(biomeTypedKey) ||
-                biomeRegistry.getTag(BiomeTagKeys.IS_SAVANNA).contains(biomeTypedKey) ||
-                biomeRegistry.getTag(BiomeTagKeys.IS_TAIGA).contains(biomeTypedKey) ||
-                biomeRegistry.getTag(BiomeTagKeys.IS_HILL).contains(biomeTypedKey) ||
-                biomeRegistry.getTag(BiomeTagKeys.IS_JUNGLE).contains(biomeTypedKey) ||
-                biomeRegistry.getTag(BiomeTagKeys.IS_NETHER).contains(biomeTypedKey) ||
-                biomeRegistry.getTag(BiomeTagKeys.IS_END).contains(biomeTypedKey);
+    boolean isAllowedBiome(Biome biome) {
+        TypedKey<Biome> biomeTypedKey = TypedKey.create(RegistryKey.BIOME, biomeRegistry.getKeyOrThrow(biome));
+        return allowedBiomes.contains(biomeTypedKey);
     }
 
     /**
