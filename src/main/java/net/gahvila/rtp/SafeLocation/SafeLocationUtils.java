@@ -71,13 +71,16 @@ public class SafeLocationUtils {
         Registry<Biome> biomeRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME);
         TypedKey<Biome> biomeTypedKey = TypedKey.create(RegistryKey.BIOME, biomeRegistry.getKeyOrThrow(biome));
 
-        return biomeRegistry.getTag(BiomeTagKeys.IS_FOREST).contains(biomeTypedKey) ||
-                biomeRegistry.getTag(BiomeTagKeys.IS_SAVANNA).contains(biomeTypedKey) ||
-                biomeRegistry.getTag(BiomeTagKeys.IS_TAIGA).contains(biomeTypedKey) ||
-                biomeRegistry.getTag(BiomeTagKeys.IS_HILL).contains(biomeTypedKey) ||
-                biomeRegistry.getTag(BiomeTagKeys.IS_JUNGLE).contains(biomeTypedKey) ||
-                biomeRegistry.getTag(BiomeTagKeys.IS_NETHER).contains(biomeTypedKey) ||
-                biomeRegistry.getTag(BiomeTagKeys.IS_END).contains(biomeTypedKey);
+        Set<TypedKey<Biome>> allowedBiomes = new HashSet<>();
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_FOREST).values());
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_SAVANNA).values());
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_TAIGA).values());
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_HILL).values());
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_JUNGLE).values());
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_NETHER).values());
+        allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_END).values());
+
+        return allowedBiomes.contains(biomeTypedKey);
     }
 
     /**
