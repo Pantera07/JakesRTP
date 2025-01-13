@@ -11,6 +11,7 @@ import net.gahvila.rtp.PluginHooks.ClaimsManager;
 import net.gahvila.rtp.PluginHooks.WorldBorderPluginHook;
 import net.gahvila.rtp.Utils.GeneralUtil;
 import net.gahvila.rtp.Utils.LocationCacheFiller;
+import net.gahvila.rtp.SafeLocation.SafeLocationUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
@@ -84,6 +85,7 @@ public final class RTP extends JavaPlugin {
         loadMessageMap(); // Loads all the messages that get sent by the plugin
         loadRandomTeleporter(); // Loads the random teleporter
         loadLocationCacheFiller(); // Loads the location cache filler
+        SafeLocationUtils.loadAllowBiome(); // Loads allow biome
 
         if (!getConfig().getBoolean("land-claim-support.force-disable-all", false))
             claimsManager = new ClaimsManager(this, getConfig().getConfigurationSection("land-claim-support"));
