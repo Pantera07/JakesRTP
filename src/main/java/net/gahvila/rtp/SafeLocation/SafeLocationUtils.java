@@ -145,6 +145,7 @@ public class SafeLocationUtils {
      */
     void dropToGround(final Location loc) {
         requireMainThread();
+        loc.setY(loc.getWorld().getHighestBlockYAt(loc));
         while (isSafeToBeIn(loc.getBlock().getType()) || isSafeToGoThrough(loc.getBlock().getType()))
             loc.add(0, -1, 0);
     }
@@ -158,6 +159,7 @@ public class SafeLocationUtils {
      * @param chunk The chunk snapshot that contains the {@code Location}'s data.
      */
     void dropToGround(final Location loc, ChunkSnapshot chunk) {
+        loc.setY(locHighestBlockYAtFromSnapshot(loc, chunk));
         while (isSafeToBeIn(locMatFromSnapshot(loc, chunk)) || isSafeToGoThrough(locMatFromSnapshot(loc, chunk)))
             loc.add(0, -1, 0);
     }
@@ -172,13 +174,16 @@ public class SafeLocationUtils {
      */
     void dropToGround(final Location loc, int lowBound, int highBound) {
         requireMainThread();
+        loc.setY(loc.getWorld().getHighestBlockYAt(loc));
         // If our location was above the max height, drop us to it.
-        if (loc.getY() > highBound) loc.setY(highBound);
-        // If we start in a solid block, we need to wait until we get out of it
-        while (loc.getBlockY() > lowBound && !(
-            isSafeToBeIn(loc.getBlock().getType())
-            || isSafeToGoThrough(loc.getBlock().getType()))
-        ) loc.add(0, -1, 0);
+        if (loc.getY() > highBound) {
+            loc.setY(highBound);
+            // If we start in a solid block, we need to wait until we get out of it
+            while (loc.getBlockY() > lowBound && !(
+                isSafeToBeIn(loc.getBlock().getType())
+                || isSafeToGoThrough(loc.getBlock().getType()))
+            ) loc.add(0, -1, 0);
+        }
         // Now we are in something non-solid; we can start looking for the ground
         while (loc.getBlockY() > lowBound && (
             isSafeToBeIn(loc.getBlock().getType())
@@ -196,13 +201,16 @@ public class SafeLocationUtils {
      * @param chunk    The chunk snapshot that contains the {@code Location}'s data.
      */
     void dropToGround(final Location loc, int lowBound, int highBound, ChunkSnapshot chunk) {
+        loc.setY(locHighestBlockYAtFromSnapshot(loc, chunk));
         // If our location was above the max height, drop us to it.
-        if (loc.getY() > highBound) loc.setY(highBound);
-        // If we start in a solid block, we need to wait until we get out of it
-        while (loc.getBlockY() > lowBound && !(
-            isSafeToBeIn(locMatFromSnapshot(loc, chunk))
-            || isSafeToGoThrough(locMatFromSnapshot(loc, chunk)))
-        ) loc.add(0, -1, 0);
+        if (loc.getY() > highBound) {
+            loc.setY(highBound);
+            // If we start in a solid block, we need to wait until we get out of it
+            while (loc.getBlockY() > lowBound && !(
+                isSafeToBeIn(locMatFromSnapshot(loc, chunk))
+                || isSafeToGoThrough(locMatFromSnapshot(loc, chunk)))
+            ) loc.add(0, -1, 0);
+        }
         // Now we are in something non-solid; we can start looking for the ground
         while (loc.getBlockY() > lowBound && (
             isSafeToBeIn(locMatFromSnapshot(loc, chunk))
@@ -269,6 +277,20 @@ public class SafeLocationUtils {
 
     Biome chunkLocBiomeFromSnapshot(int inX, int y, int inZ, ChunkSnapshot chunk) {
         return chunk.getBiome(inX, y, inZ);
+    }
+
+    int locHighestBlockYAtFromSnapshot(Location loc, ChunkSnapshot chunk) {
+        if (!isLocationInsideChunk(loc, chunk))
+            throw new RuntimeException("The given location is not within given chunk!");
+        int x = loc.getBlockX() % 16;
+        int z = loc.getBlockZ() % 16;
+        if (x < 0) x += 16;
+        if (z < 0) z += 16;
+        return chunkHighestBlockYAtFromSnapshot(x, z, chunk);
+    }
+
+    int chunkHighestBlockYAtFromSnapshot(int inX, int inZ, ChunkSnapshot chunk) {
+        return chunk.getHighestBlockYAt(inX, inZ);
     }
 
     Material locMatFromSnapshot(Location loc, ChunkSnapshot chunk) {
