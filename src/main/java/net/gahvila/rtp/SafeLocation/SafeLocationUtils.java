@@ -7,6 +7,9 @@ import io.papermc.paper.registry.keys.tags.BiomeTagKeys;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SafeLocationUtils {
 
     public static final SafeLocationUtils util;
