@@ -79,6 +79,10 @@ public abstract class SafeLocationFinder {
             if (!enableSelfChecking)
                 throw new JrtpBaseException("Tried to use self checking on an object that can not self check.");
 
+            if(!SafeLocationUtils.util.isAllowedBiome(getLocBiome(loc))) {
+                nextInSpiral();
+                return false;
+            }
             moveToStart(checkProfile);
 
             for (int i = 0, spiralArea = (int) Math.pow(checkRadiusXZ * 2 + 1, 2); i < spiralArea; i++)
