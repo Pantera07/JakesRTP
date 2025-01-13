@@ -102,7 +102,7 @@ public class SafeLocationFinderOtherThread extends SafeLocationFinder {
                     Bukkit.getScheduler().callSyncMethod(
                             RTP.plugin,
                             () -> chunkAt.getWorld().getChunkAtAsync(chunkAt).thenApply(chunk -> {
-                                return chunk.getChunkSnapshot(false, true, false, false);
+                                return chunk.getChunkSnapshot(true, true, false, false);
                             })
                     );
             // Looks to get the result of `callSyncFuture` which will be the value of `getChunkSnapshotFuture`
