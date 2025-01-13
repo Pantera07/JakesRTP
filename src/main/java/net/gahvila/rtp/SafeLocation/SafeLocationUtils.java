@@ -14,6 +14,8 @@ public class SafeLocationUtils {
 
     public static final SafeLocationUtils util;
 
+    private static Registry<Biome> biomeRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME);
+    private static Set<TypedKey<Biome>> allowedBiomes = new HashSet<>();
 
     static {
         util = new SafeLocationUtils();
@@ -70,11 +72,7 @@ public class SafeLocationUtils {
      * @param biome The biome to check
      * @return Whether it is an allowed biome
      */
-    boolean isAllowedBiome(Biome biome) {
-        Registry<Biome> biomeRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME);
-        TypedKey<Biome> biomeTypedKey = TypedKey.create(RegistryKey.BIOME, biomeRegistry.getKeyOrThrow(biome));
-
-        Set<TypedKey<Biome>> allowedBiomes = new HashSet<>();
+    public static void loadAllowBiome() {
         allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_FOREST).values());
         allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_SAVANNA).values());
         allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_TAIGA).values());
@@ -82,7 +80,10 @@ public class SafeLocationUtils {
         allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_JUNGLE).values());
         allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_NETHER).values());
         allowedBiomes.addAll(biomeRegistry.getTag(BiomeTagKeys.IS_END).values());
+    }
 
+    boolean isAllowedBiome(Biome biome) {
+        TypedKey<Biome> biomeTypedKey = TypedKey.create(RegistryKey.BIOME, biomeRegistry.getKeyOrThrow(biome));
         return allowedBiomes.contains(biomeTypedKey);
     }
 
